@@ -29,7 +29,7 @@
 
         <p class="para" style="text-align: center; margin-top: 20px;">
             New Customer?
-            <a href="signin.php" style="color: blue;">Create your account</a>
+            <a href="signup.php" style="color: blue;">Create your account</a>
         </p>
     </form>
 </div>

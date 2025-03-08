@@ -7,7 +7,7 @@ function usernameExist($conn, $username){
     $sql = "SELECT * FROM sign_in WHERE username =?;";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
-        header("Location: signin.php?err=stmtfailed");
+        header("Location: signun.php?err=stmtfailed");
         exit();
     }
 
@@ -59,7 +59,7 @@ if(isset($_POST['loginbtn'])){
 
     login($conn, $username, $pw);
 } else {
-    header("Location: signin.php");
+    header("Location: signun.php");
     exit();
 }
 ?>
