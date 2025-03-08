@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
     const usernameInput = document.getElementById("username");
     const passwordInput = document.getElementById("password");
-    const confirmPasswordInput = document.getElementById("confirm-password");
+    const confirmPasswordInput = document.getElementById("c_password");
     const submitButton = document.getElementById("submitBtn");
 
-    const usernameError = document.getElementById("username-error");
-    const passwordError = document.getElementById("password-error");
-    const confirmPasswordError = document.getElementById("confirm-password-error");
+    const usernameError = document.getElementById("uerror");
+    const passwordError = document.getElementById("perror");
+    const confirmPasswordError = document.getElementById("cpwerror");
 
     function validateUsername() {
         const username = usernameInput.value.trim();
@@ -24,6 +24,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const hasLowercase = /[a-z]/.test(password);
         const hasUppercase = /[A-Z]/.test(password);
         const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+        var pw = document.getElementById("password").value;
+        var strengthBar = document.getElementById("pw_strength");
+        let strength = 0;
+        if (pw.length > 5) strength++;
+        if (pw.match(/[a-z]+/)) strength++;
+        if (pw.match(/[A-Z]+/)) strength++;
+        if (pw.match(/[$@#&!]+/)) strength++;
+
+        let strengthText = ["Weak", "Fair", "Good", "Strong", "Very Strong"];
+        let colors = ["red", "orange", "yellow", "blue", "green"];
+
+        strengthBar.innerHTML = `<p style='color: ${colors[strength]};'>${strengthText[strength]}</p>`;
+        
 
         if (!hasLowercase || !hasUppercase || !hasSpecialChar) {
             passwordError.textContent = "Password must contain at least one lowercase, one uppercase, and one special character.";
@@ -44,30 +58,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    usernameInput.addEventListener("input", validateUsername);
-    passwordInput.addEventListener("input", validatePassword);
-    confirmPasswordInput.addEventListener("input", validateConfirmPassword);
+        usernameInput.addEventListener("input", validateUsername);
+        passwordInput.addEventListener("input", validatePassword);
+        confirmPasswordInput.addEventListener("input", validateConfirmPassword);
 
-    document.getElementById("signupForm").addEventListener("submit", function (event) {
+        document.getElementById("signupForm").addEventListener("submit", function (event) {
         if (!validateUsername() || !validatePassword() || !validateConfirmPassword()) {
-            event.preventDefault(); 
+            event.preventDefault();
         }
     });
 });
-
-function checkPasswordStrength() {
-    var password = document.getElementById("password").value;
-    var strengthBar = document.getElementById("password-strength");
-
-    let strength = 0;
-    if (password.length > 5) strength++;
-    if (password.match(/[a-z]+/)) strength++;
-    if (password.match(/[A-Z]+/)) strength++;
-    if (password.match(/[0-9]+/)) strength++;
-    if (password.match(/[$@#&!]+/)) strength++;
-
-    let strengthText = ["Weak", "Fair", "Good", "Strong", "Very Strong"];
-    let colors = ["red", "orange", "yellow", "blue", "green"];
-
-    strengthBar.innerHTML = `<p style="color: ${colors[strength]};">${strengthText[strength]}</p>`;
-}

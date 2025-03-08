@@ -23,24 +23,44 @@ function usernameExist($conn, $username){
 
 
 function login($conn, $username, $pw){
-    $sql = "SELECT * FROM sign_in WHERE username =? AND password = ?; ";
+    $sql = "SELECT * FROM sign_in WHERE username =? ";
 
     $stmt = mysqli_stmt_init($conn);
+    $stmt1 = mysqli_stmt_init($conn);
+
     mysqli_stmt_prepare($stmt, $sql);
     mysqli_stmt_bind_param($stmt, 's', $username);
-    mysqli_stmt_bind_param($stmt, 'p', $pw);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
-$row = mysqli_fetch_assoc($result);
+    $row = mysqli_fetch_assoc($result);
 
 
-    session_start();    
-    $_SESSION['username'] = $row['username'];
-    $_SESSION['user_id'] = $row['user_id'];
-    mysqli_stmt_close($stmt);
-    header("Location: useraccount.php");
-    exit();
+    if ($row = mysqli_fetch_assoc($result)) {
+        
+    if (password_verify($pw, $row['password'])) {
+        $_SESSION['username'] = $row['username'];
+        $_SESSION['user_id'] = $row['user_id'];
+        header("Location: useraccount.php");
+        exit();
+    } else {
+        $_SESSION['login_error'] = "Incorrect password.";
+        echo "<script>
+        alert('Password is incorrect.');
+            setTimeout(function() {
+                window.location.href = 'login.php';
+            }, 0);
+    </script>";         exit();
+    }
+    } else {
+        $_SESSION['login_error'] = "Username does not exist.";
+        echo "<script>
+        alert('Username does not exist.');
+            setTimeout(function() {
+                window.location.href = 'login.php';
+            }, 0);
+    </script>";        exit();
+    }
 }
 
 if(isset($_POST['loginbtn'])){
@@ -48,8 +68,12 @@ if(isset($_POST['loginbtn'])){
     $pw = $_POST['password'];
     
     if(!usernameExist($conn, $username)){
-        echo "User not found";
-        exit();
+        echo "<script>
+        alert('User not found');
+            setTimeout(function() {
+                window.location.href = 'login.php';
+            }, 0 );
+    </script>";          exit();
     }
 
     login($conn, $username, $pw);
