@@ -15,10 +15,10 @@
         <p class="signpara">Enter your Username and Password</p>
 
         <p class="signparaa">Username</p>
-        <input class="inputbox" type="text" id='email' name="email" id="">
+        <input class="inputbox" type="text" id='email' name="username" id="">
     
         <p class="signparaa">Password</p>
-        <input class="inputbox" type="password" name="passwordd" id="">
+        <input class="inputbox" type="password" name="password" id="">
 
         
         <p class="signpara marginpara">
