@@ -23,12 +23,12 @@ function usernameExist($conn, $username){
 
 
 function login($conn, $username, $pw){
-    $sql = "SELECT * FROM sign_in WHERE username =?;";
+    $sql = "SELECT * FROM sign_in WHERE username =? AND password = ?; ";
 
     $stmt = mysqli_stmt_init($conn);
     mysqli_stmt_prepare($stmt, $sql);
-   // mysqli_stmt_prepare($stmt, $sql1);
     mysqli_stmt_bind_param($stmt, 's', $username);
+    mysqli_stmt_bind_param($stmt, 'p', $pw);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
@@ -46,11 +46,6 @@ $row = mysqli_fetch_assoc($result);
 if(isset($_POST['loginbtn'])){
     $username = $_POST['username'];
     $pw = $_POST['password'];
-    
-    if(empty($username) || empty($pw)){
-        echo "Enter valid details";
-        exit();
-    }
     
     if(!usernameExist($conn, $username)){
         echo "User not found";

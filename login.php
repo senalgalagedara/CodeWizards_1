@@ -15,11 +15,28 @@
         <p class="signpara">Enter your Username and Password</p>
 
         <p class="signparaa">Username</p>
-        <input class="inputbox" type="text" id='email' name="username" id="">
+        <input class="inputbox" type="text" id='username' name="username" >
     
         <p class="signparaa">Password</p>
-        <input class="inputbox" type="password" name="password" id="">
+        <input class="inputbox" type="password" name="password" id="password" required>
 
+        <script>
+        function validatePassword() {
+        const password = passwordInput.value;
+        const hasLowercase = /[a-z]/.test(password);
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+        if (!hasLowercase || !hasUppercase || !hasSpecialChar) {
+            passwordError.textContent = "Password must contain at least one lowercase, one uppercase, and one special character.";
+            return false;
+        } else {
+            passwordError.textContent = "";
+            return true;
+        }
+    }
+
+        </script>
         
         <p class="signpara marginpara">
             <input class="checkbox" type="checkbox" name="" id="">Remember Login.

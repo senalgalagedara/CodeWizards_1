@@ -18,10 +18,10 @@ if(isset($_POST['submitsignin'])){
     } else {
         $hashed_pw = password_hash($pw, PASSWORD_BCRYPT);
 
-        $sql = "INSERT INTO sign_in(username, password) VALUES ('$uname', '$hashed_pw')";
+        $sql = "INSERT INTO sign_in(username, password , c_password) VALUES ('$uname', '$hashed_pw' , '$cpw')";
 
         if($conn->query($sql) === TRUE) {
-            $success = "Account created successfully! Redirecting to login...";
+            header("Location: login.php");
         } else {
             $error = "Error: " . $conn->error;
         }
@@ -36,66 +36,114 @@ if(isset($_POST['submitsignin'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - FashionFix</title>
     <link rel="stylesheet" href="css/style.css">
-    <script src="src/js/script.js" defer></script>
+    <script src="js/signu.js" defer></script>
 </head>
 <body>
 <div class="bodysite">
-    <form class="signinbox" style="height: 600px;" action="" method="post">
+    <form class="signinbox" style="height: 570px;" action="" method="post" id="signupForm">
         <h2 class="headd">Create Account</h2>
         <p class="signpara">Please fill in the information below to create an account</p>
 
-        <?php if($error): ?>
-            <p class="error-message" style="color: red; text-align: center;"><?= $error; ?></p>
-        <?php endif; ?>
-
-        <?php if($success): ?>
-            <p class="success-message" style="color: green; text-align: center;"><?= $success; ?></p>
-            <script>
-                setTimeout(function() {
-                    window.location.href = "login.php";
-                }, 2000);
-            </script>
-        <?php endif; ?>
-
-        <p class="signparaa">Name</p>
-        <input class="inputbox" type="text" name="username" required>
+        <p class="signparaa">Username</p>
+        <input class="inputbox" type="text" name="username" id="username" required>
+        <p id="uerror" style="color: red;"></p>
 
         <p class="signparaa">Password</p>
         <input class="inputbox" type="password" name="password" id="password" onkeyup="checkPasswordStrength()" required>
-        <div id="password-strength"></div>
+        <div id="pw_strength"></div>
+        <p id="perror" style="color: red;"></p>
 
         <p class="signparaa">Confirm Password</p>
-        <input class="inputbox" type="password" name="c_password" required>
+        <input class="inputbox" type="password" name="c_password" id="c_password" required>
+        <p id="cpwerror" style="color: red;"></p>
 
         <p class="signpara marginpara">
-            <input class="checkbox" type="checkbox" required> By clicking this you agree to our terms & conditions.
+            <input class="checkbox" type="checkbox" name="terms" id="terms" required> By clicking this you agree to our terms & conditions.
         </p>
 
-        <button type="submit" name="submitsignin" class="submitbtn" style="cursor: pointer;">Create An Account</button>
+        <button type="submit" name="submitsignin" class="submitbtn" id="submitBtn" style="cursor: pointer;">Create An Account</button>
 
         <p class="para" style="text-align: center; margin-top: 20px;">
-            Already have an account? <a href="login.php" style="color: blue;">Login here</a>
+            Already have an account?
+            <a href="login.php" style="color: blue;">Login here</a>
         </p>
     </form>
 </div>
+</body>
+</html>
 
 <script>
-function checkPasswordStrength() {
-    var password = document.getElementById("password").value;
-    var strengthBar = document.getElementById("password-strength");
+    document.addEventListener("DOMContentLoaded", function () {
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("c_password");
+    const submitButton = document.getElementById("submitBtn");
 
-    let strength = 0;
-    if (password.length > 5) strength++;
-    if (password.match(/[a-z]+/)) strength++;
-    if (password.match(/[A-Z]+/)) strength++;
-    if (password.match(/[0-9]+/)) strength++;
-    if (password.match(/[$@#&!]+/)) strength++;
+    const usernameError = document.getElementById("uerror");
+    const passwordError = document.getElementById("perror");
+    const confirmPasswordError = document.getElementById("cpwerror");
 
-    let strengthText = ["Weak", "Fair", "Good", "Strong", "Very Strong"];
-    let colors = ["red", "orange", "yellow", "blue", "green"];
+    function validateUsername() {
+        const username = usernameInput.value.trim();
+        if (username.length < 8) {
+            usernameError.textContent = "Username must be at least 8 characters long.";
+            return false;
+        } else {
+            usernameError.textContent = "";
+            return true;
+        }
+    }
 
-    strengthBar.innerHTML = `<p style="color: ${colors[strength]};">${strengthText[strength]}</p>`;
-}
+    function validatePassword() {
+        const password = passwordInput.value;
+        const hasLowercase = /[a-z]/.test(password);
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+        var pw = document.getElementById("password").value;
+        var strengthBar = document.getElementById("pw_strength");
+        let strength = 0;
+        if (pw.length > 5) strength++;
+        if (pw.match(/[a-z]+/)) strength++;
+        if (pw.match(/[A-Z]+/)) strength++;
+        if (pw.match(/[$@#&!]+/)) strength++;
+
+        let strengthText = ["Weak", "Fair", "Good", "Strong", "Very Strong"];
+        let colors = ["red", "orange", "yellow", "blue", "green"];
+
+        strengthBar.innerHTML = `<p style='color: ${colors[strength]};'>${strengthText[strength]}</p>`;
+        
+
+        if (!hasLowercase || !hasUppercase || !hasSpecialChar) {
+            passwordError.textContent = "Password must contain at least one lowercase, one uppercase, and one special character.";
+            return false;
+        } else {
+            passwordError.textContent = "";
+            return true;
+        }
+    }
+
+    function validateConfirmPassword() {
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            confirmPasswordError.textContent = "Passwords do not match.";
+            return false;
+        } else {
+            confirmPasswordError.textContent = "";
+            return true;
+        }
+    }
+
+    usernameInput.addEventListener("input", validateUsername);
+    passwordInput.addEventListener("input", validatePassword);
+    confirmPasswordInput.addEventListener("input", validateConfirmPassword);
+
+    document.getElementById("signupForm").addEventListener("submit", function (event) {
+        if (!validateUsername() || !validatePassword() || !validateConfirmPassword()) {
+            event.preventDefault();
+        }
+    });
+});
+
 </script>
 
 </body>
