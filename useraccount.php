@@ -1,28 +1,28 @@
 <?php
-include("config.php");
-session_start(); 
+    include("config.php");
+    session_start(); 
 
-if(!isset($_SESSION)){
-    echo "Session has not been started!";
-    exit();
-}
+    if(!isset($_SESSION)){
+        echo "Session has not been started!";
+        exit();
+    }
 
-if(isset($_SESSION['username'])){
-    $sql = "SELECT * FROM sign_in WHERE username =?;";
-    $stmt = mysqli_stmt_init($conn);
-    mysqli_stmt_prepare($stmt, $sql);
-    mysqli_stmt_bind_param($stmt, 's', $username);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    if(isset($_SESSION['username'])){
+        $sql = "SELECT * FROM sign_in WHERE username =?;";
+        $stmt = mysqli_stmt_init($conn);
+        mysqli_stmt_prepare($stmt, $sql);
+        mysqli_stmt_bind_param($stmt, 's', $username);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
 
-    $row = mysqli_fetch_assoc($result);
+        $row = mysqli_fetch_assoc($result);
 
-    $email = $_SESSION['username'];
-    $id = $_SESSION['user_id'];
+        $email = $_SESSION['username'];
+        $id = $_SESSION['user_id'];
 
-} else {
+    } else {
 
-}
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +36,6 @@ if(isset($_SESSION['username'])){
 <body>
 
 <div >
-<h2 id="newarrivals" class="topic" style="margin-top: 40px;">Account Information</h2>
 <table>
     <tr>
     <tbody>
@@ -59,26 +58,30 @@ if ($result) {
         
 
         echo "
-        <form action='' method='post'>
+        <div class='userform'>
+        <form action='' method='post' >
+         <h2 id='newarrivals' class='topic'>Account Information</h2>
             <table class='usertable'>
+
                 <tr>
                     <th colspan='2'></th>
                 </tr>
                 <tr>
                     <td class= 'accdetails'>User Id</td>
-                    <td ><input type='text' name='User_Id' value='$id' class='accint none' readonly></td>
+                    <td ><input class='useraccint' type='text' name='User_Id' value='$id' class='accint none' readonly></td>
                 </tr>
                 <tr>
                     <td class= 'accdetails'>Username</td>
-                    <td><input type='text' name='username' class='accint ' value='$username'></td>
+                    <td><input class='useraccint' type='text' name='username' class='accint ' value='$username'></td>
                 </tr>
                 
                 <tr>
                     <td>
-                    <button type='submit' class='logout' name='logout' formaction='logout.php'>log out</button>
                     </td>
                 </tr>
             </table>
+            <button type='submit' class='logout' name='logout' formaction='logout.php'>log out</button>
+
         </form>";
     }
 } else {

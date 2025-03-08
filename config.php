@@ -5,10 +5,8 @@
     $password = "";
     $db = "spiritx_usersign";
 
-    // Create connection
     $conn = new mysqli($servername, $username, $password,$db);
 
-    //Check connection
     if ($conn) {
         //echo "Connected successfully";
     }

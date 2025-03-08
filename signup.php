@@ -1,32 +1,32 @@
 <?php
-include("config.php");
+    include("config.php");
 
-$error = "";
-$success = "";
+    $error = "";
+    $success = "";
 
-if(isset($_POST['submitsignin'])){
-    $uname = trim($_POST['username']);
-    $pw = trim($_POST['password']);
-    $cpw = trim($_POST['c_password']);
+    if(isset($_POST['submitsignin'])){
+        $uname = trim($_POST['username']);
+        $pw = trim($_POST['password']);
+        $cpw = trim($_POST['c_password']);
 
-    if(empty($uname) || empty($pw) || empty($cpw)){
-        $error = "All fields are required.";
-    } elseif($pw !== $cpw) {
-        $error = "Passwords do not match.";
-    } elseif(strlen($pw) < 6) {
-        $error = "Password must be at least 6 characters.";
-    } else {
-        $hashed_pw = password_hash($pw, PASSWORD_BCRYPT);
-
-        $sql = "INSERT INTO sign_in(username, password , c_password) VALUES ('$uname', '$hashed_pw' , '$cpw')";
-
-        if($conn->query($sql) === TRUE) {
-            header("Location: login.php");
+        if(empty($uname) || empty($pw) || empty($cpw)){
+            $error = "All fields are required.";
+        } elseif($pw !== $cpw) {
+            $error = "Passwords do not match.";
+        } elseif(strlen($pw) < 6) {
+            $error = "Password must be at least 6 characters.";
         } else {
-            $error = "Error: " . $conn->error;
+            $hashed_pw = password_hash($pw, PASSWORD_BCRYPT);
+
+            $sql = "INSERT INTO sign_in(username, password , c_password) VALUES ('$uname', '$hashed_pw' , '$cpw')";
+
+            if($conn->query($sql) === TRUE) {
+                header("Location: login.php");
+            } else {
+                $error = "Error: " . $conn->error;
+            }
         }
     }
-}
 ?>
 
 <!DOCTYPE html>
@@ -38,9 +38,9 @@ if(isset($_POST['submitsignin'])){
     <link rel="stylesheet" href="css/style.css">
     <script src="js/signup.js" defer></script>
 </head>
-<body>
-<div class="bodysite">
-    <form class="signinbox" style="height: 570px;" action="" method="post" id="signupForm">
+<body style="background-image: url('https://i.imgur.com/5wt06s6.gif'); background-repeat:no-repeat;">
+<div class="login_ui">
+    <form class="form-box" style="height: 570px; padding:20px 30px;" action="" method="post" id="signupForm">
         <h2 class="headd">Create Account</h2>
         <p class="signpara">Please fill in the information below to create an account</p>
 
@@ -61,7 +61,7 @@ if(isset($_POST['submitsignin'])){
             <input class="checkbox" type="checkbox" name="terms" id="terms" required> By clicking this you agree to our terms & conditions.
         </p>
 
-        <button type="submit" name="submitsignin" class="submitbtn" id="submitBtn" style="cursor: pointer;">Create An Account</button>
+        <button type="submit" name="submitsignin" class="signup_submit" id="submitBtn" style="cursor: pointer;">Create An Account</button>
 
         <p class="para" style="text-align: center; margin-top: 20px;">
             Already have an account?
