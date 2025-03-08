@@ -16,8 +16,9 @@ if(isset($_POST['submitsignin'])){
     } elseif(strlen($pw) < 6) {
         $error = "Password must be at least 6 characters.";
     } else {
+        $hashed_pw = password_hash($pw, PASSWORD_BCRYPT);
 
-        $sql = "INSERT INTO sign_in(username, password , c_password) VALUES ('$uname', '$pw' , '$cpw')";
+        $sql = "INSERT INTO sign_in(username, password , c_password) VALUES ('$uname', '$hashed_pw' , '$cpw')";
 
         if($conn->query($sql) === TRUE) {
             header("Location: login.php");
