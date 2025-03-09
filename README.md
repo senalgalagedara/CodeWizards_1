@@ -1,7 +1,7 @@
 # Login & Signup UI with Backend Authentication
 
 # View Demo 
-- https://senalgalagedara.github.io/CodeWizards_1/
+- https://senalgalagedara.github.io/CodeWizards_1/signup.php
 
 ## What This Project Does
 This project is a simple login and signup system with a backend. It lets users create an account, log in, and stay logged in until they choose to log out. It also includes validation to make sure everything is secure and works properly.
