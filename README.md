@@ -32,9 +32,10 @@ This project is a simple login and signup system with a backend. It lets users c
 ## How to Use It
 1. Clone the project to htdocs(if using xampp).
 2. Run the backend server on xampp.
-3. initiate database and tables in mysql.
-4. Start the frontend on browser by localhost/path name....
-5. Open the app in a browser and sign up or log in.
+3. Import sql database into phpmyadmin.
+4. initiate database and tables in mysql.
+5. Start the frontend on browser by localhost/path name....
+6. Open the app in a browser and sign up or log in.
 
 ## Things to Keep in Mind
 - Usernames must be unique, so two people can’t have the same one.
